@@ -7,7 +7,13 @@ import (
 
 func ResponseJSON(w http.ResponseWriter, p interface{}, status int) {
 	ubahkeByte, err := json.Marshal(p)
+w.Header().Set("Access-Control-Allow-Origin", "*")
 
+// semua method diperbolehkan masuk
+w.Header().Set("Access-Control-Allow-Methods", "*")
+
+// semua header diperbolehkan untuk disisipkan
+w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {

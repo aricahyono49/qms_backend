@@ -20,14 +20,17 @@ func main() {
 	helper.PanicIfError(eb)
 	fmt.Println("database running success")
 
-	http.HandleFunc("/users", Login)
+	http.HandleFunc("/api/login", Login)
 	
-	err := http.ListenAndServe(":7000", nil)
+	err := http.ListenAndServe(":9000", nil)
 	helper.PanicIfError(err)
 }
 
 // Login
 func Login(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "OPTIONS" {
+		utils.ResponseJSON(w, "resUsers", http.StatusOK)
+	}
 	if r.Method == "POST" {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()

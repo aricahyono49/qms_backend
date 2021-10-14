@@ -9,7 +9,7 @@ import (
 const (
 	username string = "root"
 	password string = ""
-	database string = "belajar_golang"
+	database string = "qms_backend"
 )
 
 var (

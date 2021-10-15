@@ -21,18 +21,12 @@ func GetBank(ctx context.Context, kota string) (map[string]interface{}, error) {
 		helper.PanicIfError(err)
 		for rowQuery.Next() {
 			var bank model.Bank
-
-			if err = rowQuery.Scan(
+			 err = rowQuery.Scan(
 				&bank.Id,
 				&bank.NamaBank,
-				&bank.Alamat,
-			); err != nil {
-				return map[string]interface{}{
-			"status"  : 400,
-			"data"  : "get data bank failed",
-		}, nil
-			}
-
+				&bank.Alamat,)
+			helper.PanicIfError(err)		
+			
 			banks = append(banks, bank)
 		}
 	} else {

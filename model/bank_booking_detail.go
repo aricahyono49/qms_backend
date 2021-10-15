@@ -1,5 +1,6 @@
 package model
 
+import "time"
 
 type BankBookingDetail struct {
 	Id               int32  `json:"id"`
@@ -8,6 +9,6 @@ type BankBookingDetail struct {
 	Alamat           string `json:"alamat"`
 	KeperluanLayanan int32  `json:"keperluan_layanan"`
 	JamPelayanan     string `json:"jam_pelayanan"`
-	TglPelayanan     string  `json:"tanggal_pelayanan"`
+	TglPelayanan     time.Time  `json:"tanggal_pelayanan"`
 	BookingSLot      int32  `json:"booking_slot"`
 }

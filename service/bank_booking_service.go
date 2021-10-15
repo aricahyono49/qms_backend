@@ -6,6 +6,7 @@ import (
 	"main/config"
 	"main/helper"
 	"main/model"
+	"time"
 )
 
 
@@ -27,6 +28,11 @@ func GetBankAntrian(ctx context.Context, bankId string) (map[string]interface{},
 			&booking_bank_detail.TglPelayanan,
 		&booking_bank_detail.BookingSLot )
 
+	}else{
+		return map[string]interface{}{
+		"status": 200,
+		"data":   nil,
+	}, nil
 	}
 	defer rowQuery.Close()
 	
@@ -53,10 +59,10 @@ func BankBooking(ctx context.Context, book model.BankBooking) (map[string]interf
 
 	tx, err := db.Begin(); 
 	helper.PanicIfError(err)
-
+	dt := time.Now()
 
 	SQL := "INSERT INTO user_booking_banks (user_id, bank_id, jam_pelayanan, tanggal_pelayanan, keperluan_layanan, nomor_antrian) VALUES (?,?,?,?,?,?)"
-	rows , err := tx.ExecContext(ctx, SQL, book.UserId, book.BankId, "08:00", "17 Oct 2021", book.KeperluanLayanan, (kuota - (bookingSLot - 1)) )
+	rows , err := tx.ExecContext(ctx, SQL, book.UserId, book.BankId, "08:00", dt, book.KeperluanLayanan, (kuota - (bookingSLot - 1)) )
 	helper.PanicIfError(err)
 	SQL2 := "UPDATE banks SET banks.booking_slot = (SELECT banks.booking_slot FROM banks WHERE banks.id = ? ) - 1 WHERE banks.id = ?"
 	rowku , err := tx.ExecContext(ctx, SQL2, book.BankId, book.BankId)

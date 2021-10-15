@@ -15,7 +15,7 @@ func NewRoute() *gin.Engine {
 	r.POST("/api/user/register", repository.Register)
 	r.GET("/api/user/:id/booking", repository.GetUserBookingBank)
 
-	// Post 
+	// Bank
 	r.GET("/api/bank", repository.BankIndex)
 	r.POST("/api/bank/booking", repository.BankBooking)
 	r.DELETE("/api/bank/booking/:bookingBankId", repository.BookingBankSelesai)

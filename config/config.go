@@ -9,7 +9,7 @@ import (
 const (
 	username string = "root"
 	password string = ""
-	database string = "qms_backend"
+	database string = "qms_backend?parseTime=True"
 )
 
 var (

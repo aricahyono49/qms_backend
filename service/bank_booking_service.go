@@ -10,12 +10,14 @@ import (
 )
 
 
-func GetBankAntrian(ctx context.Context, bankId string) (map[string]interface{}, error) {
+func GetBankAntrian(ctx context.Context, bankId string, dateSetting string) (map[string]interface{}, error) {
 	var booking_bank_detail model.BankBookingDetail
 	db, err := config.MySQL()
 	helper.PanicIfError(err)
-	queryText := "SELECT user_booking_banks.id, user_booking_banks.nomor_antrian, banks.nama_bank, banks.alamat, user_booking_banks.keperluan_layanan, user_booking_banks.jam_pelayanan, user_booking_banks.tanggal_pelayanan, banks.booking_slot  FROM `users` INNER JOIN `user_booking_banks` ON user_booking_banks.user_id = users.id INNER JOIN `banks` on banks.id = user_booking_banks.bank_id WHERE user_booking_banks.status != 'done' AND user_booking_banks.bank_id = ?"
-	rowQuery, err := db.QueryContext(ctx, queryText, bankId)
+	// det := time.Now()
+	// fmt.Printf(det.Format("2006-01-02"))
+	queryText := "SELECT user_booking_banks.id, user_booking_banks.nomor_antrian, banks.nama_bank, banks.alamat, user_booking_banks.keperluan_layanan, user_booking_banks.jam_pelayanan, user_booking_banks.tanggal_pelayanan, banks.booking_slot  FROM `users` INNER JOIN `user_booking_banks` ON user_booking_banks.user_id = users.id INNER JOIN `banks` on banks.id = user_booking_banks.bank_id WHERE user_booking_banks.status != 'done' AND user_booking_banks.bank_id = ?  AND user_booking_banks.tanggal_pelayanan = ?"
+	rowQuery, err := db.QueryContext(ctx, queryText, bankId, dateSetting)
 	helper.PanicIfError(err)
 	if rowQuery.Next(){
 		rowQuery.Scan(
@@ -62,7 +64,7 @@ func BankBooking(ctx context.Context, book model.BankBooking) (map[string]interf
 	dt := time.Now()
 
 	SQL := "INSERT INTO user_booking_banks (user_id, bank_id, jam_pelayanan, tanggal_pelayanan, keperluan_layanan, nomor_antrian) VALUES (?,?,?,?,?,?)"
-	rows , err := tx.ExecContext(ctx, SQL, book.UserId, book.BankId, "08:00", dt, book.KeperluanLayanan, (kuota - (bookingSLot - 1)) )
+	rows , err := tx.ExecContext(ctx, SQL, book.UserId, book.BankId, "08:00", dt.AddDate(0, 0, 1), book.KeperluanLayanan, (kuota - (bookingSLot - 1)) )
 	helper.PanicIfError(err)
 	SQL2 := "UPDATE banks SET banks.booking_slot = (SELECT banks.booking_slot FROM banks WHERE banks.id = ? ) - 1 WHERE banks.id = ?"
 	rowku , err := tx.ExecContext(ctx, SQL2, book.BankId, book.BankId)

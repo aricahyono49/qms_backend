@@ -1,9 +1,11 @@
 package repository
 
 import (
+	"fmt"
 	"main/helper"
 	"main/model"
 	"main/service"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +28,10 @@ func BankIndex(c *gin.Context) {
 }
 func GetBankAntrian(c *gin.Context) {
 	bankId := c.Param("id")
-	resUsers, err := service.GetBankAntrian(c, bankId)
+	dt := time.Now()
+	dateSetting := c.DefaultQuery("date", dt.Format("2006-01-02"))
+	fmt.Println(dt.Format("2006-01-02"))
+	resUsers, err := service.GetBankAntrian(c, bankId, dateSetting)
 	helper.PanicIfError(err)
 	c.JSON(200, gin.H{
 		"data": resUsers["data"],

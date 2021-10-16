@@ -23,7 +23,7 @@ func main() {
 	fmt.Println("database running success")
 	
 	dt := time.Now()
-	fmt.Println(dt)
+	fmt.Println(dt.Format("02-Jan-2006"))
 	// Routing
 	r := route.NewRoute()
 	r.Run() 

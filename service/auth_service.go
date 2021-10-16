@@ -14,12 +14,12 @@ func Login(ctx context.Context, user model.User) (map[string]interface{}, error)
 	db, err := config.MySQL()
 	helper.PanicIfError(err)
 	
-	SQL := "select username, password from users where username = ? AND password = ?"
+	SQL := "select id, username, password from users where username = ? AND password = ?"
 	rows, err := db.QueryContext(ctx, SQL, user.Username ,user.Password)
 	helper.PanicIfError(err)
 
 	if rows.Next() {
-		err = rows.Scan(&users.Username, &users.Password); 
+		err = rows.Scan(&users.Id,&users.Username, &users.Password); 
 		helper.PanicIfError(err)
 	}else{
 		return map[string]interface{}{
@@ -31,6 +31,7 @@ func Login(ctx context.Context, user model.User) (map[string]interface{}, error)
 	return map[string]interface{}{
 			"status"  : 200,
 			"message"  : "login success",
+			"user_id"  : users.Id,
 		}, nil
 }
 func Register(ctx context.Context, user model.User) (map[string]interface{}, error) {

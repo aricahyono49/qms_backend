@@ -17,6 +17,8 @@ func Login(c *gin.Context) {
 	status := resUsers["status"].(int)
 	c.JSON(status, gin.H{
 		"message": resUsers["message"],
+		"user_id": resUsers["user_id"],
+
 	})
 }
 

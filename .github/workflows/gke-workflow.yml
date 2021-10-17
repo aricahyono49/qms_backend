@@ -1,0 +1,31 @@
+name: Build and Deploy to GKE
+on:
+  push:
+    branches:
+      - develop
+env:
+    PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+    DB_USERNAME: ${{ secrets.TEAM_NAME }}
+    DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    DB_HOST: ${{ secrets.DB_HOST }}
+    DB_PORT: 3306
+    DB_NAME: ${{ secrets.TEAM_NAME }}
+    GKE_CLUSTER: backend-gke-cluster
+    GKE_REGION: asia-east1
+    TEAM_NAME: ${{ secrets.TEAM_NAME }}
+
+jobs:
+    setup-build-publish-deploy:
+        name: Setup, Build, Publish, and Deploy
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            # Setup gcloud CLI
+            - uses: google-github-actions/setup-gcloud@master
+              with:
+                  version: '290.0.1'
+                  service_account_key: ${{ secrets.GKE_SA_KEY }}
+                  project_id: ${{ secrets.GKE_PROJECT }}

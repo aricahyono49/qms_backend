@@ -8,9 +8,13 @@ import (
 )
 
 const (
-	username string = "backend-c-queue-management@tcp(35.201.240.187:3306)"
-	password string = "9MghTbFu5NCRt6lc"
-	database string = "backend-c-queue-management?parseTime=True"
+	username string = "root"
+	password string = ""
+	database string = "qms_backend?parseTime=True"
+	
+	// username string = "backend-c-queue-management@tcp(35.201.240.187:3306)"
+	// password string = "9MghTbFu5NCRt6lc"
+	// database string = "backend-c-queue-management?parseTime=True"
 )
 
 var (

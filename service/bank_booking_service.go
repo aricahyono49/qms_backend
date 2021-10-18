@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
-	"main/config"
+	"main/db"
 	"main/helper"
 	"main/model"
 	"time"
@@ -12,7 +12,7 @@ import (
 
 func GetBankAntrian(ctx context.Context, bankId string, dateSetting string) (map[string]interface{}, error) {
 	var booking_bank_detail model.BankBookingDetail
-	db, err := config.MySQL()
+	db, err := db.MySQL()
 	helper.PanicIfError(err)
 	// det := time.Now()
 	// fmt.Printf(det.Format("2006-01-02"))
@@ -46,7 +46,7 @@ func GetBankAntrian(ctx context.Context, bankId string, dateSetting string) (map
 
 func BankBooking(ctx context.Context, book model.BankBooking) (map[string]interface{}, error) {
 
-	db, err := config.MySQL()
+	db, err := db.MySQL()
 	helper.PanicIfError(err)
 
 
@@ -86,7 +86,7 @@ func BankBooking(ctx context.Context, book model.BankBooking) (map[string]interf
 }
 
 func BookingBankSelesai(ctx context.Context, bookingBankId string) (string, error) {
-	db, err := config.MySQL()
+	db, err := db.MySQL()
 	helper.PanicIfError(err)
 	queryText := "UPDATE user_booking_banks SET status= ? WHERE user_booking_banks.id = ?"
 	rowQuery, err := db.ExecContext(ctx, queryText, "done", bookingBankId )

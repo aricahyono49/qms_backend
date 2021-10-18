@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"main/config"
+	"main/db"
 	"main/helper"
 	"main/model"
 )
@@ -11,7 +11,7 @@ func GetBank(ctx context.Context, kota string) (map[string]interface{}, error) {
 
 	var banks []model.Bank
 
-	db, err := config.MySQL()
+	db, err :=db.MySQL()
 	helper.PanicIfError(err)
 	var queryText string
 	if kota == "all" {

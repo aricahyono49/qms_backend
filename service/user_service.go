@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	// "fmt"
-	"main/config"
+	"main/db"
 	"main/helper"
 	"main/model"
 	// "time"
@@ -11,7 +11,7 @@ import (
 
 func GetUserBookingBank(ctx context.Context, user_id string) (map[string]interface{}, error) {
 	var booking_bank_detail model.BankBookingDetail
-	db, err := config.MySQL()
+	db, err := db.MySQL()
 	helper.PanicIfError(err)
 	
 	queryText := "SELECT user_booking_banks.id, user_booking_banks.nomor_antrian, banks.nama_bank, banks.alamat, user_booking_banks.keperluan_layanan, user_booking_banks.jam_pelayanan, user_booking_banks.tanggal_pelayanan, banks.booking_slot  FROM `users` INNER JOIN `user_booking_banks` ON user_booking_banks.user_id = users.id INNER JOIN `banks` on banks.id = user_booking_banks.bank_id WHERE user_booking_banks.status != 'done' AND user_booking_banks.user_id = ?"

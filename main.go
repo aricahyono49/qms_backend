@@ -2,21 +2,17 @@ package main
 
 import (
 	"fmt"
-	"main/config"
 	"main/helper"
 	"main/route"
+	"main/db"
+	_ "main/config"
 	"time"
 )
-
-type formB struct {
-  Username string `json:"username"`
-  Password string `json:"password"`
-}
 
 
 func main() {
 
-	db, e := config.MySQL()
+	db, e := db.MySQL()
 	helper.PanicIfError(e)
 	eb := db.Ping()
 	helper.PanicIfError(eb)

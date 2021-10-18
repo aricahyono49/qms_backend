@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
-	"main/config"
+	"main/db"
 	"main/helper"
 	"main/model"
 )
@@ -11,7 +11,7 @@ import (
 func Login(ctx context.Context, user model.User) (map[string]interface{}, error) {
 
 	var users model.User
-	db, err := config.MySQL()
+	db, err := db.MySQL()
 	helper.PanicIfError(err)
 	
 	SQL := "select id, username, password from users where username = ? AND password = ?"
@@ -36,7 +36,7 @@ func Login(ctx context.Context, user model.User) (map[string]interface{}, error)
 }
 func Register(ctx context.Context, user model.User) (map[string]interface{}, error) {
 
-	db, err := config.MySQL()
+	db, err := db.MySQL()
 	helper.PanicIfError(err)
 	SQL := "INSERT INTO users (username, password) VALUES (?,?)"
 	rows, err := db.ExecContext(ctx, SQL, user.Username, user.Password)

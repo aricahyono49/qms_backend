@@ -8,13 +8,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-
 // HubToMySQL
-func MySQL(username string, pass string , dbName string ) (*sql.DB, error) {
-	
-var (
-	dsn = fmt.Sprintf("%v:%v@/%v",username, pass, dbName)
-)
+func MySQL() (*sql.DB, error) {
+
+	var (
+		dsn = fmt.Sprintf("%v:%v@/%v", config.Configuration.DBUsername, config.Configuration.DBPassword, config.Configuration.DBName)
+	)
 	db, err := sql.Open("mysql", dsn)
 
 	if err != nil {
